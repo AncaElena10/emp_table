@@ -1,0 +1,120 @@
+<div class="modal fade reveal-modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          <font color="white">Edit User</font>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body align-items-center text-center">
+        <form #editEmployeeForm="ngForm" (ngSubmit)="onSubmit(editEmployeeForm)">
+          <input type="hidden" name="id" #id="ngModel" [(ngModel)]="selectedObj.id">
+
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="recipient-firstname" class="col-form-label">First Name: </label>
+              <input class="form-control" id="recipient-firstname" type="text" name="firstname" #name="ngModel"
+                [(ngModel)]="selectedObj.firstname" placeholder="Enter first name" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="recipient-surname" class="col-form-label">Surname: </label>
+              <input class="form-control" id="recipient-surname" type="text" name="surname" #name="ngModel" [(ngModel)]="selectedObj.surname"
+                placeholder="Enter sur name" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="recipient-edit-position" class="col-form-label">Position:</label>
+              <input class="form-control" id="recipient-edit-position" type="text" name="position" #name="ngModel"
+                [(ngModel)]="selectedObj.position" placeholder="Enter position">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="recipient-edit-office" class="col-form-label">Office:</label>
+              <input class="form-control" id="recipient-edit-office" type="text" name="office" #name="ngModel"
+                [(ngModel)]="selectedObj.office" placeholder="Enter office location">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="recipient-edit-salary" class="col-form-label">Salary:</label>
+              <input class="form-control" id="recipient-edit-salary" type="text" name="salary" #name="ngModel"
+                [(ngModel)]="selectedObj.salary" placeholder="Enter salary">
+            </div>
+          </div>
+
+          <!-- <hr> -->
+
+          <!-- <h5>Project Options</h5> -->
+
+          <!-- <ng-container *ngFor="let p of projects">
+            <ng-container *ngIf="p.id==selectedObj.id">
+              <hr>
+              <div class="row">
+                <div class="input-field col s12">
+                  <label for="recipient-edit-projectName" class="col-form-label">Project Name: {{ p.projectName }}</label>
+                  <input class="form-control" id="recipient-edit-projectName" type="text" name="projectName" #name="ngModel"
+                    [(ngModel)]="p.projectName" placeholder="Enter project name">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s12">
+                  <label for="recipient-edit-poNumber" class="col-form-label">PO Number: {{ p.poNumber }}</label>
+                  <input class="form-control" id="recipient-edit-poNumber" type="text" name="poNumber" #name="ngModel"
+                    [(ngModel)]="p.poNumber" placeholder="Enter PO number">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s12">
+                  <label for="recipient-edit-serialNo" class="col-form-label">Serial No: {{ p.serialNo }}</label>
+                  <input class="form-control" id="recipient-edit-serialNo" type="text" name="serialNo" #name="ngModel"
+                    [(ngModel)]="p.serialNo" placeholder="Enter serial No">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s12">
+                  <label for="recipient-edit-skillCode" class="col-form-label">Skill Code: {{ p.skillCode }}</label>
+                  <div *ngFor="let enum of skillCodeArray">
+                    <label for="enum_answer_{{enum.name}}">
+                      <input id="enum_answer_{{enum.name}}" name="skillCode" [value]='enum.name' type="radio" #name="ngModel"
+                        [(ngModel)]="p.skillCode">
+                      {{enum.name}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container> -->
+
+
+          <div class="center">
+            <div class="row">
+              <div class="col s12">
+                <button class="btn btn-warning right" type="button" (click)="employeeService.resetForm(editEmployeeForm)"
+                  style="margin: 10px">Reset</button>
+                <button class="btn btn-success right" type="submit" [disabled]="!editEmployeeForm.valid" style="margin: 10px">Submit</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin: 10px">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

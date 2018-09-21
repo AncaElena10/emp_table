@@ -1,0 +1,32 @@
+.pointer {
+  cursor: pointer;
+}
+
+.myfont {
+  font-style: normal;
+}
+
+ul {
+  overflow: hidden;
+  overflow-y: scroll;
+  width: 100%;
+  height: 65px;
+  position: relative;
+  padding: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

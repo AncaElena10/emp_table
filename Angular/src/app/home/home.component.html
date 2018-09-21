@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row" style="background-color:#ffffff;
+        border: 1px solid #dadada;">
+    <div class="col-sm-12">
+    </div>
+    <div *ngIf="!apiService.getLoggedIn()" class="col-sm-12">
+      <h1 class="align-items-center text-center">Hello, guest!</h1>
+      <div class="alert alert-danger" role="alert">
+        You must be logged in to post a comment.
+      </div>
+    </div>
+    <div *ngIf="apiService.getLoggedIn()" class="col-sm-12">
+      <h1 class="align-items-center text-center">Hello, {{ apiService.selectedUser.firstname }}!</h1>
+    </div>
+    <app-blog></app-blog>
+  </div>
+</div>

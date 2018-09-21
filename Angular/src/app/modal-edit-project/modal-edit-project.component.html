@@ -1,0 +1,144 @@
+<div class="modal fade reveal-modal" id="edit-project-options" tabindex="-1" role="dialog" aria-labelledby="editProjOpt"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editProjOpt">
+          <font color="white">Projects Info</font>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body align-items-center text-center">
+        <div *ngIf="showActiveProjects">
+          <p>{{ selectedObj.firstname }}, here you can see your active projects.</p>
+        </div>
+
+        <div *ngIf="showAddNewProject">
+          <p>{{ selectedObj.firstname }}, here you can add some new projects.</p>
+        </div>
+
+        <div class="center">
+          <button class="btn btn-info" (click)="showProjects()" style="margin: 10px">Active projects</button>
+          <button class="btn btn-primary" (click)="addNewProject()" style="margin: 10px">Add a new project</button>
+        </div>
+
+        <!-- projects info -->
+        <div>
+          <ng-container *ngIf="showActiveProjects">
+            <form id="infoForm">
+              <input type="hidden" name="id" #id="ngModel" [(ngModel)]="selectedObj.id">
+
+              <ng-container *ngFor="let p of projects">
+                <ng-container *ngIf="p.id==selectedObj.id">
+                  <hr>
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <label for="recipient-info-projectName" class="col-form-label"><span style="font-weight: bold;">Project
+                          Name: </span>{{ p.projectName }}</label>
+                      <input class="form-control" id="recipient-info-projectName" type="text" name="projectName" #name="ngModel"
+                        [(ngModel)]="p.projectName" [hidden]="true">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <label for="recipient-info-projectName" class="col-form-label"><span style="font-weight: bold;">Po
+                          Number: </span>{{ p.poNumber }}</label>
+                      <input style="border: 0" class="form-control" id="recipient-info-poNumber" type="text" name="poNumber"
+                        #name="ngModel" [(ngModel)]="p.poNumber" [hidden]="true">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <label for="recipient-info-serialNo" class="col-form-label"><span style="font-weight: bold;">Serial
+                          No: </span>{{ p.serialNo }}</label>
+                      <input style="border: 0" class="form-control" id="recipient-info-serialNo" type="text" name="serialNo"
+                        #name="ngModel" [(ngModel)]="p.serialNo" [hidden]="true">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <label for="recipient-info-skillCode" class="col-form-label"><span style="font-weight: bold;">Skill
+                          Code: </span>{{ p.skillCode }}</label>
+                      <input style="border: 0" class="form-control" id="recipient-info-skillCode" type="text" name="skillCode"
+                        #name="ngModel" [(ngModel)]="p.skillCode" [hidden]="true">
+                    </div>
+                  </div>
+
+                </ng-container>
+              </ng-container>
+            </form>
+          </ng-container>
+        </div>
+
+        <!-- end projects info -->
+
+        <!-- add a mew project -->
+        <ng-container *ngIf="showAddNewProject">
+          <form #addNewProject="ngForm" (ngSubmit)="onSubmit(addNewProject)">
+            <input type="hidden" name="id" #id="ngModel" [(ngModel)]="selectedObj.id">
+            <input type="hidden" name="firstname" #id="ngModel" [(ngModel)]="selectedObj.firstname">
+            <input type="hidden" name="surname" #id="ngModel" [(ngModel)]="selectedObj.surname">
+            <input type="hidden" name="position" #id="ngModel" [(ngModel)]="selectedObj.position">
+            <input type="hidden" name="office" #id="ngModel" [(ngModel)]="selectedObj.office">
+            <input type="hidden" name="salary" #id="ngModel" [(ngModel)]="selectedObj.salary">
+            <input type="hidden" name="project" #id="ngModel" [(ngModel)]="selectedObj.project">
+
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-new-projectName" class="col-form-label">Project Name:</label>
+                <input class="form-control" id="recipient-new-projectName" type="text" name="projectName" #name="ngModel"
+                  [(ngModel)]="projectName" placeholder="Enter project name">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-new-poNumber" class="col-form-label">PO Number:</label>
+                <input class="form-control" id="recipient-new-poNumber" type="text" name="poNumber" #name="ngModel"
+                  [(ngModel)]="poNumber" placeholder="Enter PO Number">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-new-serialNo" class="col-form-label">Serial No:</label>
+                <input class="form-control" id="recipient-new-serialNo" type="text" name="serialNo" #name="ngModel"
+                  [(ngModel)]="serialNo" placeholder="Enter Serial No">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-new-skillCode" class="col-form-label">Skill Code:</label>
+                <div *ngFor="let enum of skillCodeArray">
+                  <label for="enum_answer_{{enum.name}}">
+                    <input id="enum_answer_{{enum.name}}" [value]='enum.name' type="radio" name="skillCode" [(ngModel)]="skillCode">
+                    {{enum.name}}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col s12">
+                <button class="btn btn-success right" type="submit" style="margin: 10px">Submit</button>
+              </div>
+            </div>
+            <br>
+          </form>
+        </ng-container>
+
+        <!-- end add a new project -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

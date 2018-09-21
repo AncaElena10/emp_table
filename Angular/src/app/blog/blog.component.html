@@ -1,0 +1,156 @@
+<div class="container">
+  <h2 class="mb-2">Tell us what you think!</h2>
+  <h3 class="mb-2">Comments</h3>
+  <div class="col-md-9">
+    <form [formGroup]="form" name="blogForm" (submit)="onBlogSubmit()" *ngIf="newPost">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <div [ngClass]="{'has-success': form.controls.title.valid, 'has-error': form.controls.title.dirty && form.controls.title.errors}">
+          <input type="text" name="title" class="form-control" placeholder="*Comment Title" autocomplete="off" formControlName="title"
+          />
+          <ul class="help-block">
+            <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.required" class="list-group" style="color: red">This
+              field is required.</li>
+            <li *ngIf="(form.controls.title.dirty && form.controls.title.errors?.minlength) || (form.controls.title.dirty && form.controls.title.errors?.maxlength)"
+              class="list-group" style="color: red">Max length: 80, Min length: 5</li>
+          </ul>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="body">Body</label>
+        <div [ngClass]="{'has-success': form.controls.body.valid, 'has-error': form.controls.body.dirty && form.controls.body.errors}">
+          <textarea name="body" rows="5" cols="80" placeholder="*Body" class="form-control" formControlName="body"></textarea>
+          <ul class="help-block">
+            <li *ngIf="form.controls.body.dirty && form.controls.body.errors?.required" class="list-group" style="color: red">This
+              field is required.</li>
+            <li *ngIf="(form.controls.body.dirty && form.controls.body.errors?.minlength) || (form.controls.body.dirty && form.controls.body.errors?.maxlength)"
+              class="list-group" style="color: red">Max length: 500, Min length: 5</li>
+          </ul>
+        </div>
+      </div>
+      <button [disabled]="processing" type="button" name="button" (click)="goBack()" class="btn btn-warning">Go Back</button>
+      <button [disabled]="processing || !form.valid" type="submit" name="button" class="btn btn-success">Submit</button>
+    </form>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="comments col-md-9" id="comments">
+      <div *ngIf="!newPost">
+        <div *ngFor="let blog of blogPosts">
+          <hr>
+          <div class="mb-2 row">
+            <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
+              <a href=""><img class="mx-auto rounded-circle img-fluid" [src]="'https://pbs.twimg.com/media/C8QlKN7V0AA3zlG.jpg'"
+                  alt="avatar"></a>
+            </div>
+            <div class="comment-content col-md-11 col-sm-10">
+              <h6 class="small comment-meta"><a href="#">{{ blog.createdBy }}</a> {{ blog.createdAt | date:'MMM dd, yyyy'
+                }}
+              </h6>
+              <h4 class="panel-title" style="color: #07C;">{{ blog.title }}</h4>
+              <p style="font-size: 15px;">
+                {{ blog.body }}
+              </p>
+              <button id="reply_button" class="text-right small" (click)="draftComment(blog._id)" [disabled]="newComment.indexOf(blog._id) > -1"><i
+                  class="material-icons" style="font-size:12px; color: #07C;">reply</i><span class="small" style="color: #07C;">reply</span></button>
+            </div>
+
+            <!-- reply form -->
+            <div class="col-md-11 offset-md-1 col-sm-10 offset-sm-2">
+              <div class="comments js-comments-container">
+                <ul class="comments-list js-comments-list" data-remaining-comments-count="0" data-canpost="true" data-cansee="false" data-comments-unavailable="false"
+                  data-addlink-disabled="false">
+                </ul>
+                <div class="comment-form">
+                  <div *ngIf="newComment.indexOf(blog._id) > -1">
+                    <form [formGroup]="commentForm">
+                      <div class="js-comment-form-layout d-flex fw-wrap jc-end mt8">
+                        <div class="w75 fl-grow1">
+                          <div class="js-comment-text-input-container">
+                            <textarea formControlName="comment" name="comment" class="s-textarea js-comment-text-input form-control" rows="4" cols="55">
+                            </textarea>
+
+                            <div [ngClass]="{'has-success': !commentForm.controls.comment.errors && commentForm.controls.comment.dirty, 'has-error': commentForm.controls.comment.dirty && commentForm.controls.comment.errors}">
+                              <ul class="help-block">
+                                <li *ngIf="commentForm.controls.comment.errors?.required && commentForm.controls.comment.dirty" class="list-group" style="color: red">This
+                                  field is required.</li>
+                                <li *ngIf="(commentForm.controls.comment.errors?.maxlength && commentForm.controls.comment.dirty) ||(commentForm.controls.comment.errors?.minlength && commentForm.controls.comment.dirty)"
+                                  class="list-group" style="color: red">Comment must be at
+                                  least 1 character but no more than 200.</li>
+                              </ul>
+                            </div>
+
+                          </div>
+                        </div>
+                        <div class="d-flex fd-column jc-space-between pb4 mb16">
+                          <button [disabled]="!commentForm.valid || processing || !apiService.getLoggedIn()" type="submit" name="button" class="btn btn-dark"
+                            (click)="postComment(blog._id)">Post</button>
+                          <br>
+                          <button [disabled]="processing" type="button" name="button" class="btn btn-danger" (click)="cancelSubmission(blog._id)">Cancel</button>
+                          <br></div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end reply form -->
+
+            <!-- show/hide replies -->
+            <div class="col-md-11 offset-md-1 col-sm-10 offset-sm-2">
+              <div *ngIf="enabledComments.indexOf(blog._id) === -1 && blog.comments.length > 0">
+                <span (click)="expand(blog._id)" class="pointer" style="font-size: 14px;">
+                  Show comments
+                  <i class="fa fa-comment"></i>
+                </span>
+              </div>
+              <div *ngIf="enabledComments.indexOf(blog._id) > -1">
+                <span (click)="collapse(blog._id)" class="pointer" style="font-size: 14px;">
+                  Hide Comments
+                  <i class="fa fa-comment"></i>
+                </span>
+              </div>
+              <!-- end show/hide replies -->
+
+              <!-- reply body -->
+              <div class="comment-content col-md-11 col-sm-10 col-12">
+                <div *ngIf="enabledComments.indexOf(blog._id) > -1">
+                  <div class="row">
+                    <div class="comment-body">
+                      <div *ngFor="let comment of blog.comments">
+                        <hr>
+                        <h6 class="small comment-meta"><a href="#">user</a></h6>
+                        <div>{{ comment.comment }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end reply body -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row pt-2">
+        <div class="col-12">
+          <button *ngIf="apiService.getLoggedIn() && !newPost" type="button" name="button" class="btn btn-outline-primary" (click)="newBlogForm()">Join
+            the discussion
+          </button>
+          <button *ngIf="!apiService.getLoggedIn()" type="button" name="button" class="btn disabled" style="background: #778289;">Join
+            the discussion</button>
+        </div>
+      </div>
+
+      <div class="row show-hide-message" *ngIf="message && newPost">
+        <div [ngClass]="messageClass">
+          {{ message }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

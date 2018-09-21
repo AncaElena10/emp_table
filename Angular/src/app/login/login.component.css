@@ -1,0 +1,26 @@
+.Absolute-Center {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.Absolute-Center.is-Responsive {
+  width: 50%;
+  height: 30%;
+  min-width: 200px;
+  max-width: 400px;
+  padding: 3%;
+}
+
+.align-items-center {
+  -ms-flex-align: center !important;
+  align-items: center !important;
+}
+
+.d-flex {
+  display: -ms-flexbox !important;
+  display: flex !important;
+}

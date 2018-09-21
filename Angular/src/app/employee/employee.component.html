@@ -1,0 +1,95 @@
+<div class="container">
+  <div class="row" style="background-color:#ffffff;
+              border: 1px solid #dadada; padding: 45px 50px;">
+    <h1 class="align-items-center text-center">Employee Table</h1>
+    <div class="col-sm-12">
+      <div class="table-responsive">
+        <table class="table table-hover" style="background-color: white">
+          <thead>
+            <tr>
+              <th [class.active]="order === 'firstname'" (click)="setOrder('firstname')">
+                First Name
+                <span [hidden]="reverse" class="material-icons">expand_more</span>
+                <span [hidden]="!reverse" class="material-icons">expand_less</span>
+              </th>
+              <th [class.active]="order === 'surname'" (click)="setOrder('surname')">
+                Surname
+                <span [hidden]="reverse" class="material-icons">expand_more</span>
+                <span [hidden]="!reverse" class="material-icons">expand_less</span>
+              </th>
+              <th [class.active]="order === 'position'" (click)="setOrder('position')">
+                Position
+                <span [hidden]="reverse" class="material-icons">expand_more</span>
+                <span [hidden]="!reverse" class="material-icons">expand_less</span>
+              </th>
+              <th [class.active]="order === 'office'" (click)="setOrder('office')">
+                Office
+                <span [hidden]="reverse" class="material-icons">expand_more</span>
+                <span [hidden]="!reverse" class="material-icons">expand_less</span>
+              </th>
+              <th [class.active]="order === 'salary'" (click)="setOrder('salary')">
+                Salary
+                <span [hidden]="reverse" class="material-icons">expand_more</span>
+                <span [hidden]="!reverse" class="material-icons">expand_less</span>
+              </th>
+              <th [class.active]="order === 'project'" (click)="setOrder('project')">
+                Project
+                <span [hidden]="reverse" class="material-icons">expand_more</span>
+                <span [hidden]="!reverse" class="material-icons">expand_less</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let emp of employeeService.employees | orderBy: order:reverse:'case-insensitive' | paginate: { itemsPerPage: 5, currentPage: p }">
+              <td>{{ emp.firstname }}</td>
+              <td>{{ emp.surname }}</td>
+              <td>{{ emp.position }}</td>
+              <td>{{ emp.office }}</td>
+              <!-- <td *ngIf="apiService.getLoggedIn()">{{ emp.salary }}</td>
+              <td *ngIf="!apiService.getLoggedIn()">NaN</td> -->
+              <td>{{ emp.salary }}</td>
+              <!-- <td>{{ emp.project }} <button class="btn btn-sm btn-warning" data-target="#edit-project-options"
+                  data-toggle="modal"><i class="fa fa-edit"></i></button></td> -->
+              <td>
+                <!-- <p *ngIf="displayProject">one project</p>
+                <p *ngIf="!displayProject">more than one project</p> -->
+                <button class="btn btn-sm btn-warning" data-target="#edit-project-options" data-toggle="modal" (click)="onEdit(emp)">
+                  <i class="fa fa-info"></i>
+                </button>
+              </td>
+              <td>
+                <a class="action-btn" (click)="onEdit(emp)">
+                  <!-- <p *ngIf="apiService.getLoggedIn()" class="material-icons pointer" data-target="#edit-modal" data-toggle="modal">edit</p> -->
+                  <p class="material-icons pointer" data-target="#edit-modal" data-toggle="modal">edit</p>
+                </a>
+                <a class="action-btn" (click)="onDelete(emp.id, employeeForm)">
+                  <!-- <p *ngIf="apiService.getLoggedIn()" class="material-icons pointer">delete</p> -->
+                  <p class="material-icons pointer">delete</p>
+                </a>
+              </td>
+            </tr>
+            <pagination-controls class="my-pagination" (pageChange)="p=$event" previousLabel="Previous" nextLabel="Next"></pagination-controls>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table">
+        <a class="action-btn">
+          <!-- <p *ngIf="apiService.getLoggedIn()" class="material-icons pointer" data-target="#edit-modal" data-toggle="modal">person_add</p> -->
+          <p class="material-icons pointer" data-target="#add-employee-modal" data-toggle="modal">person_add</p>
+        </a>
+      </div>
+      <div class="table">
+        <app-search></app-search>
+      </div>
+
+      <div *ngIf="selectedEmployee">
+        <app-modal [selectedObj]="selectedEmployee"></app-modal>
+        <app-modal-edit-project [selectedObj]="selectedEmployee"></app-modal-edit-project>
+      </div>
+
+      <app-modal-add-employee></app-modal-add-employee>
+
+    </div>
+  </div>
+</div>

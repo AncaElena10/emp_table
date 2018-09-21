@@ -1,0 +1,132 @@
+<div class="modal fade reveal-modal" id="add-employee-modal" tabindex="-1" role="dialog" aria-labelledby="addEmployeeModal"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addEmployeeModal">
+          <font color="white">Add User</font>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body align-items-center text-center">
+
+        <div class="center">
+          <div>
+            <span style="color: #ced4da; font-size: 14px" [hidden]="userInfo && !projectInfo">To user info</span>
+            <button id="prev" (click)="showUserInfo()" [hidden]="userInfo && !projectInfo"><i id="prev" class="fa fa-arrow-circle-left"></i></button>
+          </div>
+          <div>
+            <span style="color: #ced4da; font-size: 14px" [hidden]="!userInfo && projectInfo">To project info</span>
+            <button id="next" (click)="showProjectInfo()" [hidden]="!userInfo && projectInfo"><i id="next" class="fa fa-arrow-circle-right"></i></button>
+          </div>
+        </div>
+
+        <form #addEmployeeForm="ngForm" [formGroup]='addUser' (ngSubmit)="onSubmit(addEmployeeForm)">
+          <input type="hidden" name="id">
+
+          <div *ngIf="userInfo">
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-add-firstname" class="col-form-label">First Name: </label>
+                <input class="form-control" formControlName='firstname' id="recipient-add-firstname" type="text"
+                  placeholder="Enter first name" required>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-add-surname" class="col-form-label">Surname: </label>
+                <input class="form-control" formControlName='surname' id="recipient-add-surname" type="text"
+                  placeholder="Enter full name" required>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-add-position" class="col-form-label">Position:</label>
+                <input class="form-control" formControlName='position' id="recipient-add-position" type="text"
+                  placeholder="Enter position">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-add-office" class="col-form-label">Office:</label>
+                <input class="form-control" formControlName='office' id="recipient-add-office" type="text" placeholder="Enter office location">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-add-salary" class="col-form-label">Salary:</label>
+                <input class="form-control" formControlName='salary' id="recipient-add-salary" type="text" placeholder="Enter salary">
+              </div>
+            </div>
+          </div>
+
+          <!-- project options -->
+          <div *ngIf="projectInfo">
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-add-projectName" class="col-form-label">Project name:</label>
+                <input class="form-control" formControlName='projectName' id="recipient-add-projectName" type="text"
+                  placeholder="Enter project name">
+              </div>
+            </div>
+
+            <!-- <h5 class="modal-title" id="addEmployeeModal">Add Project Options</h5> -->
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-add-poNumber" class="col-form-label">PO Number:</label>
+                <input class="form-control" formControlName='poNumber' id="recipient-add-poNumber" type="text"
+                  placeholder="Enter PO Number">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-add-serialNo" class="col-form-label">Serial No:</label>
+                <input class="form-control" formControlName='serialNo' id="recipient-add-serialNo" type="text"
+                  placeholder="Enter Serial No">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <label for="recipient-add-skillCode" class="col-form-label">Skill Code:</label>
+                <div *ngFor="let enum of skillCodeArray">
+                  <label for="enum_answer_{{enum.name}}">
+                    <input id="enum_answer_{{enum.name}}" formControlName='skillCode' [value]='enum.name' type="radio">
+                    {{enum.name}}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="center">
+              <div class="row">
+                <div class="col s12">
+                  <button class="btn btn-warning right" type="button" (click)="employeeService.resetForm(addEmployeeForm)"
+                    style="margin: 10px">Reset</button>
+                  <button class="btn btn-success right" type="submit" style="margin: 10px">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- end project options -->
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin: 10px">Close</button>
+      </div>
+
+      <div *ngIf="selectedEmployee">
+        <app-modal [selectedObj]="selectedEmployee"></app-modal>
+      </div>
+
+    </div>
+  </div>
+</div>
